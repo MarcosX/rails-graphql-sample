@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { ApolloConsumer } from 'react-apollo';
-import './App.css';
+import { PageHeader, Button, Grid, Row, Col, Well } from 'react-bootstrap';
+
 
 const GET_GAME_QUERY = gql`
   query GetGame($id: Int!) {
@@ -47,17 +47,20 @@ class App extends Component {
     return (
       <ApolloConsumer>
         { client => (
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to React</h1>
-          </header>
-          <input type="text" value={this.state.gameId} onChange={this.handleChange.bind(this)} />
-          <button onClick={this.findGameId.bind(this, client, this.state.gameId)}>Search for game {this.state.gameId}</button>
-          <h1>{this.state.game.name}</h1>
-          <p>Chars:</p>
-          <ul>{this.state.game.characters.map(c => <li key={c.name}>{c.name}</li>)}</ul>
-        </div>
+          <Grid>
+            <Row>
+              <Col xs={6}>
+                <PageHeader>{this.state.game.name}</PageHeader>
+              </Col>
+              <Col xs={3}>
+                <input type="text" value={this.state.gameId} onChange={this.handleChange.bind(this)} />
+              </Col>
+              <Col xs={3}>
+                <Button bsStyle="primary" onClick={this.findGameId.bind(this, client, this.state.gameId)}>Search for game {this.state.gameId}</Button>
+              </Col>
+            </Row>
+            <Well bsSize="large">{this.state.game.characters.map(c => <Row key={c.name}>{c.name}</Row>)}</Well>
+          </Grid>
         )}
       </ApolloConsumer>
     );
